@@ -35,6 +35,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", require("./controllers/authController.js"));
 app.use("/api/users", require("./controllers/usersController.js"));
+app.use("/api/artists", require("./controllers/artistsController.js"));
 
 app.listen(process.env.PORT, () => {
   console.log("Nodemon listening");
