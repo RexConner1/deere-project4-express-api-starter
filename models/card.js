@@ -16,15 +16,15 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: "deckId",
       });
       Card.hasOne(models.Image, { foreignKey: "cardId" });
-      Card.hasOne(models.Type, { foreignKey: "cardId" });
+      Card.hasOne(models.Stat, { foreignKey: "cardId" })
+      Card.hasMany(models.Event, {foreignKey: "cardId" })
+      Card.belongsTo(models.Type, { foreignKey: "typeId" });
     }
   };
   Card.init({
     cardNumber: DataTypes.INTEGER,
     name: DataTypes.STRING,
-    level: DataTypes.INTEGER,
-    attack: DataTypes.INTEGER,
-    defense: DataTypes.INTEGER
+    typeId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Card',
