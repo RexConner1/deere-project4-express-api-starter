@@ -18,13 +18,13 @@ module.exports = (sequelize, DataTypes) => {
       Card.hasOne(models.Image, { foreignKey: "cardId" });
       Card.hasOne(models.Stat, { foreignKey: "cardId" })
       Card.hasMany(models.Event, {foreignKey: "cardId" })
-      Card.belongsTo(models.Type, { foreignKey: "typeId" });
+      // Card.belongsTo(models.Type, { foreignKey: "typeId" });
     }
   };
   Card.init({
     cardNumber: DataTypes.INTEGER,
     name: DataTypes.STRING,
-    typeId: DataTypes.INTEGER,
+    type: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Card',

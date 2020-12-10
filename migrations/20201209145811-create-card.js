@@ -14,8 +14,8 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      typeId: {
-        type: Sequelize.INTEGER
+      type: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
