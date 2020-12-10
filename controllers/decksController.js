@@ -15,11 +15,6 @@ router.get("/", async (req, res) => {
   res.json({ decks });
 });
 
-// router.get("/cards", async (req, res) => {
-//   let cards = await Card.findAll({ include: Stat });
-//   res.json({ cards });
-// });
-
 // GET USER DECK
 router.get("/:id", async (req, res) => {
   let deck = await Deck.findByPk(req.params.id, {
