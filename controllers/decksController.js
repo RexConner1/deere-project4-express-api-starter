@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const Deck = require("../models").Deck;
 const User = require("../models").User;
+const Deck = require("../models").Deck;
+const DeckCard = require("../models").DeckCard;
 const Card = require("../models").Card;
 const Stat = require("../models").Stat;
 
@@ -16,7 +17,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET USER DECK
-router.get("/:id", async (req, res) => {
+router.get("/deck/:id", async (req, res) => {
   let deck = await Deck.findByPk(req.params.id, {
     include: [{ model: Card }],
     where: { userId: req.user.id }
@@ -49,7 +50,6 @@ router.delete("/:id", async (req, res) => {
 // ADD CARD TO USER'S DECK
 router.post("/:id/addcard", async (req, res) => {
   let deck = await Deck.findByPk(req.params.id, {
-    include: [{ model: Card }],
     where: { userId: req.user.id }
   });
 
@@ -59,10 +59,38 @@ router.post("/:id/addcard", async (req, res) => {
 
   deck.addCard(card)
 
+  deck = await Deck.findByPk(req.params.id, {
+    include: [{ model: Card }],
+    where: { userId: req.user.id }
+  });
+
   res.json({ deck })
 });
 
 // REMOVE CARD FROM USER'S DECK
+router.delete("/:id/removecard", async (req, res) => {
+  // await DeckCard.destroy({
+  //   where: { id: req.params.id },
+  // });
+
+  let deck = await Deck.findByPk(req.params.id, {
+    where: { userId: req.user.id }
+  });
+
+  let card = await Card.findByPk(req.body.id)
+
+  await deck.removeCard(card)
+
+  deck = await Deck.findByPk(req.params.id, {
+    include: [{ model: Card }],
+    where: { userId: req.user.id }
+  });
+
+  res.json({
+    // message: `Card with id ${req.params.id} was deleted`,
+    deck
+  });
+});
 
 
 module.exports = router;
