@@ -10,7 +10,14 @@ const Stat = require("../models").Stat;
 // GET USERS DECKS
 router.get("/", async (req, res) => {
   let decks = await Deck.findAll({
-    include: [{ model: Card }],
+    include: [{ 
+      model: Card,
+      attributes: ["id", "cardNumber", "name"],
+      include: [{
+        model: Stat,
+        attributes: ["level", "attack", "defense"],
+      }],
+    }],
     where: { userId: req.user.id }
   })
   res.json({ decks });
@@ -19,7 +26,14 @@ router.get("/", async (req, res) => {
 // GET USER DECK
 router.get("/deck/:id", async (req, res) => {
   let deck = await Deck.findByPk(req.params.id, {
-    include: [{ model: Card }],
+    include: [{ 
+      model: Card,
+      attributes: ["id", "cardNumber", "name"],
+      include: [{
+        model: Stat,
+        attributes: ["level", "attack", "defense"],
+      }],
+    }],
     where: { userId: req.user.id }
   });
   res.json({ deck });
