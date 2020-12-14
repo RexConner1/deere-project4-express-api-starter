@@ -73,10 +73,10 @@ router.post("/:id/addcard", async (req, res) => {
 
   deck.addCard(card)
 
-  deck = await Deck.findByPk(req.params.id, {
-    include: [{ model: Card }],
-    where: { userId: req.user.id }
-  });
+  // deck = await Deck.findByPk(req.params.id, {
+  //   include: [{ model: Card }],
+  //   where: { userId: req.user.id }
+  // });
 
   res.json({ deck })
 });
@@ -95,10 +95,10 @@ router.delete("/:id/removecard", async (req, res) => {
 
   await deck.removeCard(card)
 
-  deck = await Deck.findByPk(req.params.id, {
-    include: [{ model: Card }],
-    where: { userId: req.user.id }
-  });
+  // deck = await Deck.findByPk(req.params.id, {
+  //   include: [{ model: Card }],
+  //   where: { userId: req.user.id }
+  // });
 
   res.json({
     // message: `Card with id ${req.params.id} was deleted`,
