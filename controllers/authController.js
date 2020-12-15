@@ -60,6 +60,7 @@ router.post("/login", (req, res) => {
           const token = jwt.sign(
             {
               username: foundUser.username,
+              password: foundUser.password,
               id: foundUser.id,
             },
             process.env.JWT_SECRET,
@@ -70,7 +71,11 @@ router.post("/login", (req, res) => {
           console.log(token);
           res.cookie("jwt", token); // SEND A NEW COOKIE TO THE BROWSER TO STORE TOKEN
           // res.redirect(`/users/profile/${foundUser.id}`);
-          res.json({ token });
+          res.json({ 
+            id: foundUser.id,
+            name: foundUser.name,
+            token: token 
+          });
         } else {
           return res.sendStatus(400);
         }
