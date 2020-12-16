@@ -8,7 +8,7 @@ const Card = require("../models").Card;
 const Stat = require("../models").Stat;
 
 // GET USERS DECKS
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
   let decks = await Deck.findAll({
     include: [{ 
       model: Card,
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
         attributes: ["level", "attack", "defense"],
       }],
     }],
-    where: { userId: req.user.id }
+    where: { userId: req.params.id }
   })
   res.json({ decks });
 });
@@ -34,9 +34,8 @@ router.get("/deck/:id", async (req, res) => {
         attributes: ["level", "attack", "defense"],
       }],
     }],
-    where: { userId: req.user.id }
   });
-  res.json({ deck });
+  res.json({ deck: deck.Cards });
 });
 
 // UPDATE A DECK (NAME)
@@ -64,21 +63,16 @@ router.delete("/:id", async (req, res) => {
 // ADD CARD TO USER'S DECK
 router.post("/:id/addcard", async (req, res) => {
   let deck = await Deck.findByPk(req.params.id, {
-    where: { userId: req.user.id }
+    where: { userId: req.body.userId }
   });
 
-  let card = await Card.findByPk(req.body.id, {
-
-  })
+  let card = await Card.findByPk(req.body.id)
 
   deck.addCard(card)
 
-  // deck = await Deck.findByPk(req.params.id, {
-  //   include: [{ model: Card }],
-  //   where: { userId: req.user.id }
-  // });
-
-  res.json({ deck })
+  res.json({
+    message: `Card with id ${req.body.id} was added`,
+  });
 });
 
 // REMOVE CARD FROM USER'S DECK
@@ -88,21 +82,15 @@ router.delete("/:id/removecard", async (req, res) => {
   // });
 
   let deck = await Deck.findByPk(req.params.id, {
-    where: { userId: req.user.id }
+    where: { userId: req.params.id }
   });
 
   let card = await Card.findByPk(req.body.id)
 
-  await deck.removeCard(card)
-
-  // deck = await Deck.findByPk(req.params.id, {
-  //   include: [{ model: Card }],
-  //   where: { userId: req.user.id }
-  // });
+  deck.removeCard(card)
 
   res.json({
-    // message: `Card with id ${req.params.id} was deleted`,
-    deck
+    message: `Card with id ${req.body.id} was deleted`,
   });
 });
 

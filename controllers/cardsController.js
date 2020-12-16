@@ -6,7 +6,7 @@ const User = require("../models").User;
 const Card = require("../models").Card;
 const Stat = require("../models").Stat;
 
-// GET USERS DECKS
+// GET ALL CARDS
 router.get("/", async (req, res) => {
     let allCards = await Card.findAll({ include: Stat });
     res.json({ allCards });
