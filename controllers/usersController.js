@@ -43,4 +43,11 @@ router.delete("/:id", async (req, res) => {
   });
 });
 
+// ADD A DECK
+router.post("/:id/newdeck", async (req, res) => {
+  let user = await UserModel.findByPk(req.params.id);
+  let deck = await user.createDeck(req.body);
+  res.json({ user, deck });
+});
+
 module.exports = router;
