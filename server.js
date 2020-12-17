@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const request = require("request")
 const app = express();
 const methodOverride = require("method-override");
 const jwt = require("jsonwebtoken");
@@ -28,9 +29,22 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(methodOverride("_method"));
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 // HOMEPAGE
 app.get("/", (req, res) => {
-  res.json({ message: "express api app is working" });
+  request(
+    {url: 'https://cors-anywhere.herokuapp.com'},
+    (error, response, body) => {
+      if (error || response.statusCode !== 200) {
+        return res.status(500).json({ type: 'error', message: err.message })
+      }
+      res.json({ message: "express api app is working" });
+    }
+  )
 });
 
 app.use("/api/auth", require("./controllers/authController.js"));
