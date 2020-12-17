@@ -77,20 +77,12 @@ router.post("/:id/addcard", async (req, res) => {
 
 // REMOVE CARD FROM USER'S DECK
 router.delete("/:id/removecard", async (req, res) => {
-  // await DeckCard.destroy({
-  //   where: { id: req.params.id },
-  // });
-
-  let deck = await Deck.findByPk(req.params.id, {
-    where: { userId: req.params.id }
+  await DeckCard.destroy({
+    where: { id: req.params.id },
   });
 
-  let card = await Card.findByPk(req.body.id)
-
-  deck.removeCard(card)
-
   res.json({
-    message: `Card with id ${req.body.id} was deleted`,
+    message: `Card with id ${req.params.id} was deleted`,
   });
 });
 
