@@ -62,23 +62,16 @@ router.delete("/:id", async (req, res) => {
 
 // ADD CARD TO USER'S DECK
 router.post("/:id/addcard", async (req, res) => {
-  let deck = await Deck.findByPk(req.params.id, {
-    where: { userId: req.body.userId }
-  });
-
-  let card = await Card.findByPk(req.body.id)
-
-  deck.addCard(card)
-
+  DeckCard.create(req.body)
   res.json({
-    message: `Card with id ${req.body.id} was added`,
+    message: `Card was added to Deck ${req.params.id}`,
   });
 });
 
 // REMOVE CARD FROM USER'S DECK
 router.delete("/:id/removecard", async (req, res) => {
   await DeckCard.destroy({
-    where: { id: req.params.id },
+    where: { cardId: req.params.id },
   });
 
   res.json({
