@@ -4,4 +4,4 @@ This app is meant to simulate the Yu-Gi-Oh! Trading Card Game, a card-based batt
 
 ## The Plan
 - ERD:
-![](.planning/erd.jpg)
+![](./planning/erd.jpg)
