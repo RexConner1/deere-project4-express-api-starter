@@ -35,18 +35,6 @@ app.use((req, res, next) => {
 });
 
 // HOMEPAGE
-// app.get("/", (req, res) => {
-//   request(
-//     {url: 'https://cors-anywhere.herokuapp.com'},
-//     (error, response, body) => {
-//       if (error || response.statusCode !== 200) {
-//         return res.status(500).json({ type: 'error', message: err.message })
-//       }
-//       res.json({ message: "express api app is working" });
-//     }
-//   )
-// });
-
 app.get("/", (req, res) => {
   res.json({ message: "express api app is working" });
 });
