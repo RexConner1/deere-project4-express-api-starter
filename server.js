@@ -7,26 +7,6 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const createError = require("http-errors");
 
-const whitelist = [
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'http://localhost:3000/api',
-	'http://localhost:3001/api',
-  'http://localhost',
-  'https://orona-yugioh-backend.herokuapp.com',
-	'https://orona-yugioh-backend.herokuapp.com/api',
-];
-const corsOptions = {
-	credentials: true,
-	origin: (origin, callback) => {
-		if (whitelist.indexOf(origin) !== -1) {
-			callback(null, true);
-		} else {
-			callback(new Error('Not allowed by CORS'));
-		}
-	}
-};
-
 const verifyToken = (req, res, next) => {
   let token = req.cookies.jwt;
   // COOKIE PARSER GIVES YOU A .cookies PROP, WE NAMED OUR TOKEN jwt
@@ -43,7 +23,7 @@ const verifyToken = (req, res, next) => {
     next();
   });
 };
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(methodOverride("_method"));
