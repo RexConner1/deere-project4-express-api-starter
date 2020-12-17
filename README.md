@@ -14,6 +14,46 @@ This app is meant to simulate the Yu-Gi-Oh! Trading Card Game, a card-based batt
 ![](./planning/erd.jpg)
 
 ## The Approach
+As indicted in the ERD, the deck associated with Yu-Gi-Oh revolves around the concept of many other trading card games. In short, each user can have many decks. Each deck has an associated amount of cards. Each card has different traits associated with it, or in this case a name, description, type (monster, spell, trap), etc.
+
+It is therefore due to this logic that:
+- The user and deck is a one to many association. In other words, each user has many decks, but each deck belongs to one user.
+- The deck and card is a many to many relation. Decks can have many cards, and likewise cards belong in multiple decks.
+- Each card has one name, one description, and one type
+
+With the model structure in place, the controller is the other vital part. Because the deck is associated with a user, a parameter need to be passed in each time to acknowledge who the deck belongs to. For the instance, in the example below, to get all of the decks belonging to a particular user, the userId needs to be indicted, or in this case using req.params.id:
+
+```
+// GET USERS DECKS
+router.get("/:id", async (req, res) => {
+  let decks = await Deck.findAll({
+    include: [{ 
+      model: Card,
+      attributes: ["id", "cardNumber", "name"],
+      include: [{
+        model: Stat,
+        attributes: ["level", "attack", "defense"],
+      }],
+    }],
+    where: { userId: req.params.id }
+  })
+  res.json({ decks });
+});
+```
+
+However, when we get into the deck's associations in regards to the card, it is best to use the DeckCard association. Why? Well, because cards are essentially "items" (i.e. they are imported into a list from the official Yu-Gi-OH API), there is no need to create a new card every time. Namely, we just need to connect the deckId to the respective cardID. This is why when adding a card, we simply use:
+
+```
+// ADD CARD TO USER'S DECK
+router.post("/:id/addcard", async (req, res) => {
+  DeckCard.create(req.body)
+  res.json({
+    message: `Card was added to Deck ${req.params.id}`,
+  });
+});
+```
+
+...where req.body contains info on these respective ids.
 
 
 ## Technologies Used
