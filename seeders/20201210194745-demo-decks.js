@@ -6,7 +6,7 @@ module.exports = {
       { name: "Deck1", userId: 1 },
       { name: "Deck2", userId: 1 },
       { name: "Deck3", userId: 1 },
-      { name: "Deck4", userId: 2 },
+      // { name: "Deck4", userId: 2 },
     ]);
   },
 
